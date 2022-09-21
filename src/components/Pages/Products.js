@@ -4,17 +4,22 @@ import ProductCard from "../Layouts/ProductCard";
 import { useSelector } from "react-redux";
 
 const Products = () => {
-  const products = useSelector((state) => state.product.products);
-  if (!products.length) {
+  const { status, products } = useSelector((state) => state.product);
+  if (status === null || status === "loading") {
     return (
       <div className="loader-wrapper">
         <div className="loader"></div>
       </div>
     );
   }
-  const productsData = products.map((product) => (
-    <ProductCard key={product.id} product={product} />
-  ));
+  let productsData = "";
+  if (products.length > 0) {
+    productsData = products.map((product) => (
+      <ProductCard key={product.id} product={product} />
+    ));
+  } else {
+    productsData = <div>No Products Found.</div>;
+  }
   return (
     <Container className="main-sec">
       <h3 className="pg-title">Products</h3>

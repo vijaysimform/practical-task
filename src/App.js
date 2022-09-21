@@ -6,14 +6,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Custom.css";
 import Header from "./components/Layouts/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProducts } from "./store/product-slice";
 import ProductDetails from "./components/Pages/ProductDetails";
-import { fetchCartData, sendCartData } from "./store/cart-actions";
 import Notification from "./components/Layouts/Notification";
 import { Container } from "react-bootstrap";
 import { notificationActions } from "./store/notification-slice";
-
-let isInitial = true;
+import { updateCart } from "./store/cart-slice";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,23 +20,13 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (notification !== null) {
-        dispatch(notificationActions.setNotification());
+        dispatch(notificationActions.clearNotification());
       }
     }, 2000);
     return () => clearTimeout(timer);
   }, [dispatch, notification]);
 
   useEffect(() => {
-    dispatch(fetchCartData());
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-
     if (cart.changed) {
       const products = [];
       for (let i = 0; i < cart.items.length; i++) {
@@ -50,10 +37,10 @@ function App() {
         };
         products.push(tmpData);
       }
-      dispatch(sendCartData({ products }));
+      dispatch(updateCart({ products }));
     }
 
-    if(cart.notification !== null) {
+    if (cart.notification !== null) {
       dispatch(
         notificationActions.showNotification({
           status: "success",

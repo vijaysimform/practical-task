@@ -17,9 +17,9 @@ const ProductCard = (props) => {
     dispatch(cartActions.addItemToCart({ id, title, price }));
   };
 
-  const cartHasItem = cart.items.filter((item) => item.id === id);
+  const cartHasItem = cart.items.find((item) => item.id === id);
   let actionBtn = "";
-  if (cartHasItem.length > 0) {
+  if (cartHasItem) {
     actionBtn = (
       <Button variant="danger" onClick={removeItemHandler}>
         Remove from Cart

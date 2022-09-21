@@ -1,14 +1,5 @@
 const Notification = (props) => {
-  let specialClasses = '';
-
-  if (props.status === 'error') {
-    specialClasses = "error";
-  }
-  if (props.status === 'success') {
-    specialClasses = "success";
-  }
-
-  const cssClasses = `notification ${specialClasses}`;
+  const cssClasses = `notification ${props.status}`;
 
   return (
     <section className={cssClasses}>

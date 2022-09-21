@@ -5,8 +5,15 @@ import CartItem from "../Layouts/CartItem";
 
 const Cart = () => {
   const cartData = useSelector((state) => state.cart);
-  const { items, total, totalQuantity } = cartData;
+  const { items, total, totalQuantity, status } = cartData;
   let tbodyData = "";
+  if (status === "loading") {
+    return (
+      <div className="loader-wrapper">
+        <div className="loader"></div>
+      </div>
+    );
+  }
   if (items.length <= 0) {
     tbodyData = (
       <tr key="no-items">
